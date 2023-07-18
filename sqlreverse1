@@ -1,0 +1,150 @@
+REVERSE ENGINEERING SQL CODE
+
+--Link to SQL code: 
+Leetcode SQL repository; copies and pasted the SQL query into Word to reverse work the 
+code.
+
+SELECT
+  t.Request_at AS Day
+  ,ROUND(SUM(t.Status != "completed") / COUNT(*), 2) AS 'Cancellation Rate'
+FROM Trips t
+JOIN Users d ON t.Driver_Id = d.Users_Id
+JOIN Users c ON t.Client_Id = c.Users_Id
+WHERE d.Banned = "No"
+  AND c.Banned = "No"
+  AND t.Request_at BETWEEN "2013-10-01" AND "2013-10-03"
+GROUP BY t.Request_at
+ORDER BY t.Request_at;
+
+
+What does data is this code pulling?
+	This code is pulling the Cancellation Rate displayed in the Day column.
+
+Steps to figure this out.
+
+Main table is Trips which has been given an alias of ‘t’
+
+Data being joined on three tables total; trips ‘t’, Driver ‘d’ and Client ‘c’; the trips table  driver id and drivers table users id are the common key; while trips client id also relates to client user_id; An inner join was used.
+
+The data was limited to only show all  users who were banned on the driver and client table who were banned  and they had to be banned between 2023-10-01 and 2013-10-03 which was on the trips table.
+
+This was grouped using the trips table  by the Request at column
+Also ordered by the same data to be ASC.
+
+Select statement: t.Request column which given an alias ‘Day’ as the column represents days.
+, An aggregate function column to divide the column ‘Status’ from the trips table; however only columns that did not equal ‘completed’ were used in this function. The was divided by the total count of all the columns, and show with two decimal points; this column was given the alias of Cancellation Rate
+
+
+
+
+---Source of SQL Code:
+Leetcode SQL repository; copies and pasted the SQL query into Word to reverse work the 
+code.
+
+SELECT
+  d.Name AS 'Department'
+  ,e.Name AS 'Employee'
+  ,e.Salary
+FROM Employee e
+JOIN Department d
+  ON e.DepartmentId = d.Id
+WHERE
+  (SELECT COUNT(DISTINCT e2.Salary)
+  FROM
+    Employee e2
+  WHERE
+    e2.Salary > e.Salary
+      AND e.DepartmentId = e2.DepartmentId
+      ) < 3;
+
+What does data is this code pulling?
+Returning the names of the employee and department where they are not in the top 3 
+of the highest salaries in each department.
+
+Steps to figure this out.
+
+Select is returning the Department Name, Employee name, and the Salary from the employee’s table.  
+
+
+Table is using an inner join to join two tables Employee alias of ‘e’
+	And Department alias of ‘d’
+	The two tables are joined on deparmentid and id.
+	
+	The data is limited to using the Where statement of a subquery.
+
+What I thought the subquery was doing: The subquery is using an aggregate function to Count distinct Salaries on the employees table which they gave another alias e2.
+They only count the salaries on the e2 table if the salary is greater than the e1 table, the record also much has the same department. So, it’s comparing salaries of the people in the same department. 
+
+
+
+
+---Source of SQL Code:
+https://github.com/SeanWendlandt/SQL_ref_exampels/blob/main/SQL_Examples/Wen
+dlandt_Sean_Lab1.sql
+
+SELECT MAX(complete_games) as "MOST_CGS"
+FROM mlb_pitching;
+
+What does data is this code pulling?
+	Finds the largest number of games played. 
+
+Steps to figure this out.
+	The select statement shows it is looking for the Max game from the complete_game 
+Column
+
+
+
+
+---Source of SQL Code:
+https://github.com/SeanWendlandt/SQL_ref_exampels/blob/main/SQL_Examples/Wen
+dlandt_Sean_Lab1.sql
+
+SELECT avg(opp_batting_avg) as "AVG_OPP_BATTING_AVG"
+FROM mlb_pitching
+WHERE games >= 25;
+
+What does data is this code pulling?
+	Avg batting average  greater than or equal to 25
+
+Steps to figure this out.
+Select statement uses aggregate function to find the average of the batting avg gives it an alias; the result is limited using the Where statement to only return results greater than or equal to 25.
+ 
+
+---Source of SQL Code:
+https://github.com/SeanWendlandt/SQL_ref_exampels/blob/main/SQL_Examples/Wen
+dlandt_Sean_Lab1.sql
+
+SELECT avg(opp_batting_avg) as "AVG_OPP_BATTING_AVG"
+FROM mlb_pitching
+WHERE games >= 25;
+
+What does data is this code pulling?
+	Avg batting average  greater than or equal to 25
+
+Steps to figure this out.
+Select statement uses aggregate function to find the average of the batting avg gives it an alias; the result is limited using the Where statement to only return results greater than or equal to 25.
+
+
+
+
+---Source of SQL Code:
+https://github.com/SeanWendlandt/SQL_ref_exampels/blob/main/SQL_Examples/Wen
+dlandt_Sean_Lab1.sql
+
+SELECT name_first, name_last, height, name
+FROM mlb_master 
+JOIN mlb_manager
+ON mlb_master.player_id = mlb_manager.player_id
+JOIN mlb_team
+ON mlb_manager.team_id = mlb_team.team_id
+WHERE height = 
+(SELECT min(height)
+	FROM mlb_master
+    JOIN mlb_manager
+	ON mlb_master.player_id = mlb_manager.player_id);
+
+What does data is this code pulling?
+Full name, and height of the shortest player
+
+Steps to figure this out.
+Joined three tables  and then limited the data to the min height column.
